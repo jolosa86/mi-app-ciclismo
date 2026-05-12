@@ -2,103 +2,76 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Coach Ciclismo AI</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entrenos MyWhoosh</title>
     <style>
-        body { font-family: sans-serif; background: #121212; color: white; margin: 0; padding: 20px; padding-bottom: 300px; }
-        .pantalla { display: none; }
-        .activa { display: block; }
-        .card { background: #1e1e1e; padding: 20px; border-radius: 15px; margin-bottom: 15px; border: 1px solid #333; text-align: center; }
-        .grid-salud { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
-        .campo { background: #252525; padding: 10px; border-radius: 10px; border: 1px solid transparent; }
-        label { font-size: 0.8rem; color: #aaa; display: block; }
-        input { background: none; border: none; color: #00ffcc; font-size: 1.2rem; width: 100%; outline: none; }
-        .teclado { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; background: #1e1e1e; padding: 15px; border-radius: 15px; position: fixed; bottom: 10px; left: 10px; right: 10px; z-index: 100; }
-        .tecla { background: #333; padding: 15px; border-radius: 10px; text-align: center; font-size: 1.5rem; font-weight: bold; }
-        .btn-accion { background: #00ffcc; color: black; border: none; padding: 10px 20px; border-radius: 10px; font-weight: bold; width: 100%; }
-        #lista-agua { list-style: none; padding: 0; font-size: 0.9rem; color: #ccc; text-align: left; }
+        body { font-family: sans-serif; padding: 20px; background-color: #f4f4f9; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; background: white; }
+        th, td { border: 1px solid #ccc; padding: 10px; text-align: center; }
+        th { background-color: #eee; }
+        input { width: 80%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; }
+        .config { margin-bottom: 20px; padding: 15px; background: #e9ecef; border-radius: 8px; }
     </style>
 </head>
 <body>
 
-    <div id="pantalla-menu" class="pantalla activa">
-        <h2>Panel de Control 🚴‍♂️</h2>
-        <div class="card" onclick="irA('pantalla-salud')">📊 Salud y Descanso</div>
-        <div class="card" onclick="irA('pantalla-nutricion')">🍎 Nutrición y Agua</div>
-        <div class="card">⚡ Entrenamiento Hoy</div>
+    <h1>🚀 Traductor de Series</h1>
+
+    <!-- Configuración de FTP -->
+    <div class="config">
+        <label for="ftp">Mi FTP Actual (W): </label>
+        <input type="number" id="ftp" inputmode="numeric" value="256">
+        <p><small>Se guarda automáticamente para la próxima vez.</small></p>
     </div>
 
-    <div id="pantalla-salud" class="pantalla">
-        <button onclick="irA('pantalla-menu')" style="color: #00ffcc; background: none; border: none; margin-bottom: 15px;">← Volver</button>
-        <h3>Salud y Descanso</h3>
-        <div class="grid-salud">
-            <div class="campo"><label>Peso (kg)</label><input type="text" class="input-num" id="peso" readonly></div>
-            <div class="campo"><label>Grasa (%)</label><input type="text" class="input-num" id="grasa" readonly></div>
-            <div class="campo"><label>VFC (ms)</label><input type="text" class="input-num" id="vfc" readonly></div>
-            <div class="campo"><label>Sueño (h)</label><input type="text" class="input-num" id="sueno" readonly></div>
-        </div>
-    </div>
+    <hr>
 
-    <div id="pantalla-nutricion" class="pantalla">
-        <button onclick="irA('pantalla-menu')" style="color: #00ffcc; background: none; border: none; margin-bottom: 15px;">← Volver</button>
-        <h3>Nutrición y Agua</h3>
-        <div class="card">
-            <label>Total Agua Hoy</label>
-            <div id="total-agua" style="font-size: 2rem; color: #00ffcc; font-weight: bold; margin: 10px 0;">0 ml</div>
-            <button class="btn-accion" onclick="sumarAgua()">+ 100 ml 💧</button>
-        </div>
-        <div class="card" style="text-align: left;">
-            <label>Historial:</label>
-            <ul id="lista-agua"></ul>
-        </div>
-    </div>
-
-    <div id="contenedor-teclado" class="teclado" style="display: none;">
-        <div class="tecla" onclick="teclear('1')">1</div><div class="tecla" onclick="teclear('2')">2</div><div class="tecla" onclick="teclear('3')">3</div>
-        <div class="tecla" onclick="teclear('4')">4</div><div class="tecla" onclick="teclear('5')">5</div><div class="tecla" onclick="teclear('6')">6</div>
-        <div class="tecla" onclick="teclear('7')">7</div><div class="tecla" onclick="teclear('8')">8</div><div class="tecla" onclick="teclear('9')">9</div>
-        <div class="tecla" onclick="teclear('+')">+</div><div class="tecla" onclick="teclear('0')">0</div><div class="tecla" onclick="teclear('.')">.</div>
-        <div class="tecla" onclick="teclear('B')" style="grid-column: span 3; background: #522;">BORRAR</div>
-    </div>
+    <!-- Tabla de Entrenamiento -->
+    <table>
+        <thead>
+            <tr>
+                <th>Bloque</th>
+                <th>Objetivo</th>
+                <th>Real (W) ✍️</th>
+                <th>Real (RPM) ✍️</th>
+            </tr>
+        </thead>
+        <tbody id="cuerpo-tabla">
+            <!-- Aquí volcaremos los entrenos que yo te pase -->
+            <tr>
+                <td colspan="4">Esperando instrucciones de Gemini...</td>
+            </tr>
+        </tbody>
+    </table>
 
     <script>
-        let inputActivo = null;
-        let aguaTotal = 0;
+        const ftpInput = document.getElementById('ftp');
 
-        function irA(id) {
-            document.querySelectorAll('.pantalla').forEach(p => p.classList.remove('activa'));
-            document.getElementById(id).classList.add('activa');
-            // Mostrar teclado solo en pantalla salud
-            document.getElementById('contenedor-teclado').style.display = (id === 'pantalla-salud') ? 'grid' : 'none';
-        }
+        // 💾 Cargar FTP guardado al abrir la app
+        window.onload = () => {
+            const guardado = localStorage.getItem('mi_ftp');
+            if (guardado) ftpInput.value = guardado;
+        };
 
-        document.querySelectorAll('.input-num').forEach(inp => {
-            inp.addEventListener('click', (e) => {
-                inputActivo = e.target;
-                document.querySelectorAll('.campo').forEach(c => c.style.borderColor = "transparent");
-                e.target.parentElement.style.borderColor = "#00ffcc";
-            });
+        // 🔄 Guardar FTP cada vez que lo cambies
+        ftpInput.addEventListener('input', () => {
+            localStorage.setItem('mi_ftp', ftpInput.value);
         });
 
-        function teclear(v) {
-            if (!inputActivo) return;
-            if (v === 'B') {
-                inputActivo.value = inputActivo.value.slice(0, -1);
-            } else {
-                inputActivo.value += v;
-            }
-        }
-
-        function sumarAgua() {
-            aguaTotal += 100;
-            document.getElementById('total-agua').innerText = aguaTotal + " ml";
-            const ahora = new Date();
-            const tiempo = ahora.getHours() + ":" + ahora.getMinutes().toString().padStart(2, '0');
-            const lista = document.getElementById('lista-agua');
-            const item = document.createElement('li');
-            item.innerHTML = `<b>+100ml</b> - ${tiempo}`;
-            lista.prepend(item);
+        // Función que usaré yo para enviarte filas
+        function agregarFila(nombre, objetivo) {
+            const tabla = document.getElementById('cuerpo-tabla');
+            if (tabla.rows[0].cells.length === 1) tabla.innerHTML = ""; // Limpiar mensaje inicial
+            
+            const nuevaFila = `<tr>
+                <td>${nombre}</td>
+                <td>${objetivo}</td>
+                <td><input type="number" inputmode="decimal" placeholder="W"></td>
+                <td><input type="number" inputmode="decimal" placeholder="RPM"></td>
+            </tr>`;
+            tabla.innerHTML += nuevaFila;
         }
     </script>
 </body>
 </html>
+
